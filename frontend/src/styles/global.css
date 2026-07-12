@@ -1,0 +1,170 @@
+/* global.css — Plagiarism Intelligence design system */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #ffffff;
+  --surface: #f7f8fa;
+  --border: #e5e7eb;
+  --text: #1f2328;
+  --muted: #57606a;
+  --accent: #3b82d4;
+  --secondary: #7c5cd8;
+  --red: #dc2626;
+  --yellow: #d97706;
+  --green: #16a34a;
+  --red-bg: #fef2f2;
+  --yellow-bg: #fffbeb;
+  --green-bg: #f0fdf4;
+}
+
+body {
+  font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  background: var(--bg);
+  color: var(--text);
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Layout ──────────────────────────────────────────────────────────────── */
+.page { max-width: 900px; margin: 0 auto; padding: 32px 16px; }
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+}
+.page-title { font-size: 20px; font-weight: 700; }
+.page-sub { color: var(--muted); font-size: 13px; margin-top: 2px; }
+
+/* ── Nav ─────────────────────────────────────────────────────────────────── */
+nav {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+nav .brand { font-weight: 700; font-size: 15px; color: var(--accent); }
+nav .nav-link { font-size: 13px; color: var(--muted); }
+
+/* ── Cards ───────────────────────────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin-bottom: 12px;
+}
+.card-title { font-weight: 600; margin-bottom: 4px; }
+
+/* ── Tables ──────────────────────────────────────────────────────────────── */
+table { width: 100%; border-collapse: collapse; }
+th {
+  background: var(--surface);
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+td { padding: 8px 12px; border: 1px solid var(--border); }
+tr:hover td { background: var(--surface); }
+
+/* Row risk colours */
+tr.risk-high td  { background: var(--red-bg); }
+tr.risk-med td   { background: var(--yellow-bg); }
+tr.risk-low td   { background: var(--green-bg); }
+
+/* ── Buttons ─────────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn-primary  { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn-danger   { background: var(--red); color: #fff; border-color: var(--red); }
+.btn-success  { background: var(--green); color: #fff; border-color: var(--green); }
+.btn-outline  { background: #fff; color: var(--text); border-color: var(--border); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Badges ──────────────────────────────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.badge-red    { background: #fee2e2; color: var(--red); }
+.badge-yellow { background: #fef3c7; color: var(--yellow); }
+.badge-green  { background: #dcfce7; color: var(--green); }
+.badge-blue   { background: #dbeafe; color: var(--accent); }
+.badge-purple { background: #ede9fe; color: var(--secondary); }
+.badge-gray   { background: var(--surface); color: var(--muted); border: 1px solid var(--border); }
+
+/* ── Form inputs ─────────────────────────────────────────────────────────── */
+input, select, textarea {
+  font-family: inherit;
+  font-size: 14px;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+.form-group { margin-bottom: 14px; }
+
+/* ── Highlight ───────────────────────────────────────────────────────────── */
+mark.suspicious {
+  background: #fef3c7;
+  border-bottom: 2px solid var(--yellow);
+  padding: 0 2px;
+  border-radius: 2px;
+}
+mark.ai-generated {
+  background: #fee2e2;
+  border-bottom: 2px solid var(--red);
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* ── Loading / empty states ──────────────────────────────────────────────── */
+.loading { color: var(--muted); font-style: italic; padding: 24px 0; text-align: center; }
+.empty   { color: var(--muted); padding: 24px 0; text-align: center; border: 1px dashed var(--border); border-radius: 8px; }
+
+/* ── Error box ───────────────────────────────────────────────────────────── */
+.error-box {
+  background: var(--red-bg);
+  border: 1px solid #fca5a5;
+  border-radius: 6px;
+  padding: 12px 14px;
+  color: var(--red);
+  margin-bottom: 16px;
+  font-size: 13px;
+}
