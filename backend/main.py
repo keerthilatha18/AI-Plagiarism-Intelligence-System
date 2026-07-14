@@ -7,6 +7,7 @@ Startup checks:
 - Validates that all required env vars are present (Pydantic raises on import
   if any are missing — see config.py).
 - Confirms spaCy model is loadable.
+- Logs resolved CORS origins so misconfiguration is visible immediately.
 
 All routers are registered with a versioned /api/v1 prefix.
 """
@@ -35,9 +36,24 @@ app = FastAPI(
 )
 
 # ── CORS ──────────────────────────────────────────────────────────────────────
+# NOTE: settings.app_cors_origins must be an exact-match list of allowed
+# origins (scheme + host + port). "http://localhost:5175" and
+# "http://localhost:5173" are DIFFERENT origins — Vite's default port is
+# 5173 but your frontend log shows 5175, so make sure that exact value is
+# present in your .env, e.g.:
+#   APP_CORS_ORIGINS=["http://localhost:5173","http://localhost:5175"]
+cors_origins = settings.app_cors_origins
+logger.info("CORS allow_origins resolved to: %s", cors_origins)
+
+if not cors_origins:
+    logger.warning(
+        "app_cors_origins is EMPTY — all cross-origin requests, including "
+        "OPTIONS preflight, will be rejected with 400 Disallowed CORS origin."
+    )
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.app_cors_origins,
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

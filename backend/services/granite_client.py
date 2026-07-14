@@ -24,8 +24,12 @@ logger = logging.getLogger(__name__)
 
 # ── Retry decorator ────────────────────────────────────────────────────────────
 
-def _with_retry(max_attempts: int = 3, base_delay: float = 1.0):
-    """Decorator: retry `max_attempts` times with exponential back-off."""
+# Keywords that indicate a permanent failure — no point retrying
+_PERMANENT_ERRORS = ("api key could not be found", "unauthorized", "forbidden", "invalid credentials")
+
+def _with_retry(max_attempts: int = 2, base_delay: float = 0.5):
+    """Decorator: retry `max_attempts` times with exponential back-off.
+    Bails immediately on permanent auth errors (bad API key etc.)."""
     def decorator(fn):
         @wraps(fn)
         def wrapper(*args, **kwargs):
@@ -35,6 +39,11 @@ def _with_retry(max_attempts: int = 3, base_delay: float = 1.0):
                     return fn(*args, **kwargs)
                 except Exception as exc:  # noqa: BLE001 – intentional broad catch
                     last_exc = exc
+                    # Don't retry permanent errors (wrong API key, etc.)
+                    if any(p in str(exc).lower() for p in _PERMANENT_ERRORS):
+                        raise RuntimeError(
+                            f"Granite call '{fn.__name__}' failed with permanent error: {exc}"
+                        ) from exc
                     delay = base_delay * (2 ** attempt)
                     logger.warning(
                         "Granite call %s failed (attempt %d/%d): %s — retrying in %.1fs",
